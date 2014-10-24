@@ -153,18 +153,30 @@ fi
 log "Fixing 'bounce_stats.removed' value for the reactivated bounces"
 echo "
   UPDATE bounce_stats
-  SET removed = removed - (
-    SELECT COUNT(1)
-    FROM   $temp_table
-    WHERE  $temp_table.listid = bounce_stats.listid
-    AND    $temp_table.sendid = bounce_stats.sendid
-  )
-  WHERE EXISTS (
-    SELECT *
-    FROM   $temp_table
-    WHERE  $temp_table.listid = bounce_stats.listid
-    AND    $temp_table.sendid = bounce_stats.sendid
-  )
+  SET    removed = removed - aa.count
+  FROM (
+    SELECT
+      COUNT(1) AS count,
+      LOWER(SUBSTRING($temp_table.email FROM (POSITION('@' IN email) + 1))) AS domain,
+      $temp_table.listid AS listid,
+      $temp_table.sendid AS sendid,
+      $temp_table.code AS code,
+      $temp_table.type AS type
+    FROM
+      $temp_table
+    GROUP BY
+      LOWER(SUBSTRING($temp_table.email FROM (POSITION('@' IN email) + 1))),
+      $temp_table.listid,
+      $temp_table.sendid,
+      $temp_table.code,
+      $temp_table.type
+  ) aa
+  WHERE
+    aa.domain = bounce_stats.domain AND
+    aa.listid = bounce_stats.listid AND
+    aa.sendid = bounce_stats.sendid AND
+    aa.code   = bounce_stats.code   AND
+    aa.type   = bounce_stats.type
 " | $psql
 
 # Drop $temp_table

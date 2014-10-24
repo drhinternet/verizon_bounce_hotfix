@@ -12,13 +12,13 @@ studio_script="$working_dir/reactivate-studio-bounces.rb"
 mkdir -p $working_dir
 
 if [ -d "/var/hvmail" ]; then
-  curl https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-engine-bounces.sh > $engine_script
+  curl -fsSL https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-engine-bounces.sh > $engine_script
   chmod u+x $engine_script
   $engine_script
 fi
 
 if [ -d "/var/hvmail/studio" ]; then
-  curl https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-studio-bounces.rb > $studio_script
+  curl -fsSL https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-studio-bounces.rb > $studio_script
   chmod u+x $studio_script
 
   cd /var/hvmail/studio

@@ -12,12 +12,20 @@ studio_script="$working_dir/reactivate-studio-bounces.rb"
 mkdir -p $working_dir
 
 if [ -d "/var/hvmail" ]; then
+  if [ -e "/var/hvmail/apache/htdocs/ss" ]; then
+    echo "Processing GreenArrow Engine and GreenArrow Studio 3 ..."
+  else
+    echo "Processing GreenArrow Engine ..."
+  fi
+
   curl -fsSL https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-engine-bounces.sh > $engine_script
   chmod u+x $engine_script
   $engine_script
 fi
 
 if [ -d "/var/hvmail/studio" ]; then
+  echo "Processing GreenArrow Studio 4 ..."
+
   curl -fsSL https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-studio-bounces.rb > $studio_script
   chmod u+x $studio_script
 
@@ -34,3 +42,5 @@ if [ -d "/var/hvmail/studio" ]; then
 fi
 
 rm -rf $working_dir
+
+echo "Processing complete! The bad bounces generated from this incident have been cleaned up."

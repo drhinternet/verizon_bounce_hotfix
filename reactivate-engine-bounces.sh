@@ -13,7 +13,7 @@ export_dir="/var/hvmail/apache/htdocs/exports"
 psql="/var/hvmail/postgres/8.3/bin/psql -v ON_ERROR_STOP=1 -U greenarrow greenarrow"
 start_time="1413846000" # Mon, 20 Oct 2014 23:00:00 GMT / 18:00 CDT (1 hour before the first observed instance)
 end_time="1413945000" # Wed, 22 Oct 2014 02:30:00 GMT / 21:30 CDT (8 hours after the last observed instance)
-logfile="/var/hvmail/log/verizon_reactivation.log"
+logfile="/var/hvmail/log/verizon_reactivation_engine.log"
 
 # Redirect output to the log file, unless the user has specified not to
 if [ "$SKIP_REDIRECTION" != "1" ]; then

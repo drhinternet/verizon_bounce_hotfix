@@ -29,7 +29,8 @@ if [ -d "/var/hvmail/studio" ]; then
     --require-start-time '2014-10-20 18:00 CDT'  \
     --require-end-time '2014-10-21 21:30 CDT'    \
     --require-bounce-text-sql-like '%550%alias%' \
-    --require-domain 'verizon.net'
+    --require-domain 'verizon.net'               \
+    &> /var/hvmail/log/verizon_reactivation_studio.log
 fi
 
 rm -rf $working_dir

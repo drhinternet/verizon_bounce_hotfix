@@ -71,8 +71,9 @@ EOT
 fi
 
 # Export $temp_table to $export_dir
-log "Writing contents of temporary table into $export_dir/$temp_table.csv"
-echo "COPY (SELECT * FROM $temp_table) TO STDOUT WITH DELIMITER ',' CSV HEADER" | $psql > $export_dir/$temp_table.csv
+export_filename="$export_dir/$temp_table-`date +'%y%m%d%H%M%S'`.csv"
+log "Writing contents of temporary table into $export_filename"
+echo "COPY (SELECT * FROM $temp_table) TO STDOUT WITH DELIMITER ',' CSV HEADER" | $psql > $export_filename
 
 # Delete matching rows from the bounce_bad_addresses table
 log "Deleting bounces from bounce_bad_addresses table"
@@ -83,7 +84,8 @@ log "Rebuilding SimpleMH's bad address suppression database"
 /var/hvmail/bin/simplemh-get-bad-addresses || echo "SimpleMH bad address suppression database did not return success"
 
 # Export matching events table rows to $export_dir
-log "Exporting matching event table rows into $export_dir/$temp_table-events-table.csv"
+export_events_filename="$export_dir/$temp_table-events-`date +'%y%m%d%H%M%S'`.csv"
+log "Exporting matching event table rows into $export_events_filename"
 echo "
   BEGIN;
 
@@ -97,7 +99,7 @@ echo "
   AND    bounce_text ILIKE '%550%alias%'
   AND    email ILIKE '%@verizon.net';
 
-  \\COPY verizon__events TO '$export_dir/$temp_table-events-table.csv' WITH DELIMITER ',' CSV HEADER
+  \\COPY verizon__events TO '$export_events_filename' WITH DELIMITER ',' CSV HEADER
   DELETE FROM events WHERE id IN ( SELECT id FROM verizon__events );
 
   COMMIT;

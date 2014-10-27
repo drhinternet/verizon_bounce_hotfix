@@ -10,6 +10,7 @@ engine_script="$working_dir/reactivate-engine-bounces.sh"
 studio_script="$working_dir/reactivate-studio-bounces.rb"
 
 mkdir -p $working_dir
+cd $working_dir
 
 if [ -e "/var/hvmail" ]; then
   if [ -e "/var/hvmail/apache/htdocs/ss" ]; then
@@ -30,7 +31,7 @@ if [ -e "/var/hvmail/studio" ]; then
   chmod u+x $studio_script
 
   cd /var/hvmail/studio
-  cp $studio_script script/reactivate-bounced-subscribers
+  cp -a $studio_script script/reactivate-bounced-subscribers
 
   script/reactivate-bounced-subscribers          \
     --no-dry-run                                 \

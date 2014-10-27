@@ -33,13 +33,24 @@ if [ -e "/var/hvmail/studio" ]; then
   cd /var/hvmail/studio
   cp -a $studio_script script/reactivate-bounced-subscribers
 
-  script/reactivate-bounced-subscribers          \
-    --no-dry-run                                 \
-    --require-start-time '2014-10-20 18:00 CDT'  \
-    --require-end-time '2014-10-21 21:30 CDT'    \
-    --require-bounce-text-sql-like '%550%alias%' \
-    --require-domain 'verizon.net'               \
-    &> /var/hvmail/log/verizon_reactivation_studio.log
+  if [ ! -e "doc/VERSION.tag" ]; then
+    echo "Cannot determine GreenArrow Studio 4's version number. This script will not process its bounces."
+  elif ! ruby -r rubygems -e 'exit(Gem::Version.new(File.read("doc/VERSION.tag").strip.gsub("v", "")) >= Gem::Version.new("4.26.0") ? 0 : 1)'; then
+    script/reactivate-bounced-subscribers          \
+      --no-dry-run                                 \
+      --require-start-time '2014-10-20 18:00 CDT'  \
+      --require-end-time '2014-10-21 21:30 CDT'    \
+      --require-domain 'verizon.net'               \
+      &>> /var/hvmail/log/verizon_reactivation_studio.log
+  else
+    script/reactivate-bounced-subscribers          \
+      --no-dry-run                                 \
+      --require-start-time '2014-10-20 18:00 CDT'  \
+      --require-end-time '2014-10-21 21:30 CDT'    \
+      --require-bounce-text-sql-like '%550%alias%' \
+      --require-domain 'verizon.net'               \
+      &>> /var/hvmail/log/verizon_reactivation_studio.log
+  fi
 fi
 
 rm -rf $working_dir

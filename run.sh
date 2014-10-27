@@ -11,7 +11,7 @@ studio_script="$working_dir/reactivate-studio-bounces.rb"
 
 mkdir -p $working_dir
 
-if [ -d "/var/hvmail" ]; then
+if [ -e "/var/hvmail" ]; then
   if [ -e "/var/hvmail/apache/htdocs/ss" ]; then
     echo "Processing GreenArrow Engine and GreenArrow Studio 3 ..."
   else
@@ -23,7 +23,7 @@ if [ -d "/var/hvmail" ]; then
   $engine_script
 fi
 
-if [ -d "/var/hvmail/studio" ]; then
+if [ -e "/var/hvmail/studio" ]; then
   echo "Processing GreenArrow Studio 4 ..."
 
   curl -fsSL https://raw.githubusercontent.com/drhinternet/verizon_bounce_hotfix/master/reactivate-studio-bounces.rb > $studio_script

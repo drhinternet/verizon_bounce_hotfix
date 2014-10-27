@@ -43,7 +43,7 @@ if [ -e "/var/hvmail/studio" ]; then
       --require-domain 'verizon.net'               \
       --print-subscriber                           \
       --print-sql                                  \
-      &>> /var/hvmail/log/verizon_reactivation_studio.log
+      >> /var/hvmail/log/verizon_reactivation_studio.log 2>&1
   else
     script/reactivate-bounced-subscribers          \
       --no-dry-run                                 \
@@ -53,7 +53,7 @@ if [ -e "/var/hvmail/studio" ]; then
       --require-domain 'verizon.net'               \
       --print-subscriber                           \
       --print-sql                                  \
-      &>> /var/hvmail/log/verizon_reactivation_studio.log
+      >> /var/hvmail/log/verizon_reactivation_studio.log 2>&1
   fi
 fi
 

@@ -27,6 +27,7 @@ When run, the following happens:
 require "rubygems"
 require "optparse"
 require "optparse/time"
+require "pp"
 
 options = {}
 
@@ -107,6 +108,11 @@ if options[:domains] != nil && options[:domains].length == 0
   puts "Domains argument was specified with no domains"
   exit 1
 end
+
+# Echo the calculated options.
+puts "Input options:"
+pp options
+puts
 
 # Helpers and datapoints
 sql_exec               = -> sql { ActiveRecord::Base.connection.execute(sql) }

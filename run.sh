@@ -41,6 +41,8 @@ if [ -e "/var/hvmail/studio" ]; then
       --require-start-time '2014-10-20 18:00 CDT'  \
       --require-end-time '2014-10-21 21:30 CDT'    \
       --require-domain 'verizon.net'               \
+      --print-subscriber                           \
+      --print-sql                                  \
       &>> /var/hvmail/log/verizon_reactivation_studio.log
   else
     script/reactivate-bounced-subscribers          \
@@ -49,6 +51,8 @@ if [ -e "/var/hvmail/studio" ]; then
       --require-end-time '2014-10-21 21:30 CDT'    \
       --require-bounce-text-sql-like '%550%alias%' \
       --require-domain 'verizon.net'               \
+      --print-subscriber                           \
+      --print-sql                                  \
       &>> /var/hvmail/log/verizon_reactivation_studio.log
   fi
 fi
